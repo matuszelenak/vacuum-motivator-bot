@@ -3,3 +3,7 @@ psycopg2==2.8.4
 gunicorn==19.9.0
 dj-database-url==0.5.0
 djangorestframework==3.10.3
+celery==4.3.0
+slackclient==2.4.0
+slackeventsapi==2.1.0
+redis==3.3.11

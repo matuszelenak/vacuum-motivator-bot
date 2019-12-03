@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from celery.schedules import crontab
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -25,7 +27,7 @@ SECRET_KEY = '##@dscody$wd1(%d%%_ga=$jn%x1k_yj70e04o4hxef++8uye9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aabfe154.ngrok.io', 'localhost']
 
 
 # Application definition
@@ -37,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'celery',
+    'rest_framework',
+
+    'bot'
 ]
 
 MIDDLEWARE = [
@@ -70,19 +77,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'motivator.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'bot.SlackUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,5 +117,26 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+ACTIONS_START = 1
+ACTIONS_STOP = 2
+ACTIONS_CONTINUE = 3
+ACTIONS_DO = 4
+ACTIONS_LONGTERM = 5
+ACTIONS_UNFINISHED = 6
+ACTIONS_UNFULLFILLED = 7
+
 SLACK_VERIFICATION_TOKEN = os.environ.get('SLACK_VERIFICATION_TOKEN')
 SLACK_BOT_USER_TOKEN = os.environ.get('SLACK_BOT_USER_TOKEN')
+TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
+TRELLO_KEY = os.environ.get('TRELLO_KEY')
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+# CELERY_BEAT_SCHEDULE = {
+#     'start-actions': {
+#         'task': 'bot.tasks.ActionReminderDispatchTask',
+#         'schedule': crontab(minute='*/2'),
+#         'args': (ACTIONS_START,)
+#     }
+# }

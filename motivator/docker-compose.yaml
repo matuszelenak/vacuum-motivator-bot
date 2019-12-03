@@ -19,3 +19,23 @@ services:
     depends_on:
       - motivator-db
     command: python3 manage.py runserver 0.0.0.0:8000
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  celery:
+    build: .
+    depends_on:
+      - motivator-db
+      - redis
+    command: celery -A motivator worker -l info
+    volumes:
+      - .:/motivator
+  celery-beat:
+    build: .
+    command: celery -A motivator beat -l info
+    volumes:
+      - .:/motivator
+    depends_on:
+      - motivator-db
+      - redis
