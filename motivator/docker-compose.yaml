@@ -1,0 +1,21 @@
+version: '3'
+services:
+  motivator-db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_USER=motivator
+      - POSTGRES_DB=motivator
+    ports:
+      - "5432:5432"
+  motivator-web:
+    build: .
+    image: motivator
+    environment:
+      - PGHOST=motivator-db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/motivator
+    depends_on:
+      - motivator-db
+    command: python3 manage.py runserver 0.0.0.0:8000
