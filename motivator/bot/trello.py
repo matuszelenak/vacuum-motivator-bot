@@ -21,7 +21,5 @@ def trello_api_request(endpoint: str, query_params: dict) -> dict:
         'key': settings.TRELLO_KEY
     })
     url = f' https://api.trello.com/1/{endpoint}'
-    print(url)
-    print(query_params)
     response = requests.get(url, params=query_params)
     return response.json()

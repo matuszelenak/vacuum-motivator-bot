@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from bot.models import SlackUser
+
+
+@admin.register(SlackUser)
+class SlackUserAdmin(admin.ModelAdmin):
+    pass

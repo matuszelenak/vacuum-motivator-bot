@@ -1,23 +1,23 @@
 version: '3'
 services:
-  motivator-db:
+  db:
     image: postgres:10-alpine
     environment:
       - POSTGRES_USER=motivator
       - POSTGRES_DB=motivator
     ports:
       - "5432:5432"
-  motivator-web:
+  web:
     build: .
     image: motivator
     environment:
-      - PGHOST=motivator-db
+      - PGHOST=db
     ports:
       - "8000:8000"
     volumes:
       - .:/motivator
     depends_on:
-      - motivator-db
+      - db
     command: python3 manage.py runserver 0.0.0.0:8000
   redis:
     image: redis:latest
@@ -25,17 +25,22 @@ services:
       - "6379:6379"
   celery:
     build: .
+    environment:
+      - PGHOST=db
     depends_on:
-      - motivator-db
+      - db
       - redis
     command: celery -A motivator worker -l info
     volumes:
       - .:/motivator
   celery-beat:
     build: .
+    environment:
+      - PGHOST=db
     command: celery -A motivator beat -l info
     volumes:
       - .:/motivator
     depends_on:
-      - motivator-db
+      - celery
+      - db
       - redis

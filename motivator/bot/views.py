@@ -12,7 +12,7 @@ class EventView(APIView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         slack_message = request.data
-        print(json.dumps(slack_message, indent=4))
+        # print(json.dumps(slack_message, indent=4), flush=True)
 
         if slack_message.get('token') != settings.SLACK_VERIFICATION_TOKEN:
             return Response(status=status.HTTP_403_FORBIDDEN)

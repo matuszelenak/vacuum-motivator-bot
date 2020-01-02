@@ -1,0 +1,23 @@
+[
+  {
+    "model": "bot.slackuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$180000$jCOUQbYQMPHv$rn+smf4KeTsGMio0H9mUymAn7W1J+hZ/rUQuN46KlG0=",
+      "last_login": "2020-01-02T14:49:47.354Z",
+      "is_superuser": true,
+      "username": "matus.zelenak",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2020-01-02T14:48:32.142Z",
+      "slack_user_id": "UL3RWV8F4",
+      "trello_id": "5ae9e4bc8b691534822c69a2",
+      "has_notification_enabled": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

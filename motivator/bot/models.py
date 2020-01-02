@@ -17,7 +17,6 @@ class SlackUser(AbstractUser):
             slack_user_id=slack_id,
             trello_id=trello_id,
             username=user_info['name'],
-            email=user_info['profile']['email'],
             first_name=user_info['profile'].get('first_name', ''),
             last_name=user_info['profile'].get('last_name', '')
         )
@@ -27,3 +26,9 @@ class SlackUser(AbstractUser):
 
     def __str__(self):
         return f'{self.username} ({self.slack_user_id})'
+
+
+class MemeTemplate(models.Model):
+    template = models.ImageField(null=True, upload_to='memes')
+    insert_text_x = models.IntegerField()
+    insert_text_y = models.IntegerField()

@@ -1,18 +1,14 @@
+import json
+
 from .base import *
 
 DEBUG = True
 
 PRODUCTION = False
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+credentials_data = json.load(open('../credentials.json'))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'motivator',
-        'USER': 'motivator',
-        'HOST': os.environ.get('PGHOST', 'localhost'),
-        'PORT': 5432
-    }
-}
+SLACK_VERIFICATION_TOKEN = credentials_data.get('SLACK_VERIFICATION_TOKEN')
+SLACK_BOT_USER_TOKEN = credentials_data.get('SLACK_BOT_USER_TOKEN')
+TRELLO_TOKEN = credentials_data.get('TRELLO_TOKEN')
+TRELLO_KEY = credentials_data.get('TRELLO_KEY')
