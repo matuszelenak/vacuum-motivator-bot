@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=0
 ENV DJANGO_SETTINGS_MODULE=motivator.settings.development
 ENV PGHOST=db
 
-RUN apk add --no-cache --virtual build-deps curl gcc g++ make postgresql-dev postgresql-client bash jpeg-dev zlib-dev
+RUN apk add --no-cache --virtual build-deps curl gcc g++ make postgresql-dev postgresql-client bash jpeg-dev freetype-dev zlib-dev
 
 RUN mkdir /motivator
 

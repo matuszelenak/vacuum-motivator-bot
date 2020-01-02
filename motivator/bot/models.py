@@ -1,3 +1,7 @@
+import os
+
+from PIL import Image, ImageDraw, ImageFont
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -32,3 +36,10 @@ class MemeTemplate(models.Model):
     template = models.ImageField(null=True, upload_to='memes')
     insert_text_x = models.IntegerField()
     insert_text_y = models.IntegerField()
+
+    def create_meme(self, out_file, text):
+        img = Image.open(self.template)
+        draw = ImageDraw.Draw(img)
+        font = ImageFont.truetype(os.path.join(settings.BASE_DIR, 'SourceSansPro-Bold.ttf'), 36)
+        draw.text((self.insert_text_x, self.insert_text_y), text, (255, 255, 255), font=font)
+        img.save(out_file, format='png')

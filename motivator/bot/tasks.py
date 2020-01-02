@@ -1,8 +1,10 @@
+import random
+from tempfile import NamedTemporaryFile
 from typing import List
 
 from celery.task import Task
 
-from bot.models import SlackUser
+from bot.models import SlackUser, MemeTemplate
 from bot.trello import *
 from bot.slack import client
 
@@ -11,7 +13,13 @@ class ActionReminderTask(Task):
     def run(self, users: List[str], action: str, action_type: int):
         conversation = client.conversations_open(users=users)
         channel_id = conversation['channel']['id']
-        client.chat_postMessage(channel=channel_id, text=action)
+
+        template = random.choice(MemeTemplate.objects.all())
+        with NamedTemporaryFile() as f:
+            template.create_meme(f, action)
+            f.flush()
+            f.seek(0)
+            client.files_upload(file=f.name, channels=channel_id)
 
 
 class ActionReminderDispatchTask(Task):
