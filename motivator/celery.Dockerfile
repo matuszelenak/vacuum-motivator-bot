@@ -2,6 +2,7 @@ FROM python:3.7-alpine
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE 1
+ENV DJANGO_SETTINGS_MODULE=motivator.settings.heroku
 
 RUN apk add --no-cache --virtual build-deps curl gcc g++ make postgresql-dev postgresql-client bash jpeg-dev freetype-dev zlib-dev
 
