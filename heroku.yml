@@ -5,4 +5,4 @@ build:
     web: motivator/web.Dockerfile
 run:
   celery: celery -A motivator worker -l info
-  celery-bear: celery -A motivator beat -l info
+  celery-beat: celery -A motivator beat -l info
