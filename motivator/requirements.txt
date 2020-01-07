@@ -2,6 +2,7 @@ django==3.0
 psycopg2==2.8.4
 gunicorn==19.9.0
 dj-database-url==0.5.0
+whitenoise==5.0.1
 djangorestframework==3.10.3
 celery==4.3.0
 slackclient==2.4.0

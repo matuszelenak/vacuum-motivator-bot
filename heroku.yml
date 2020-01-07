@@ -1,0 +1,6 @@
+build:
+  docker:
+    celery: motivator/celery.Dockerfile
+    web: motivator/web.Dockerfile
+run:
+  celery: celery -A motivator worker -l info

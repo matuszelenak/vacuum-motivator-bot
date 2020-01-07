@@ -27,7 +27,7 @@ SECRET_KEY = '##@dscody$wd1(%d%%_ga=$jn%x1k_yj70e04o4hxef++8uye9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['d3464293.ngrok.io', 'localhost']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,10 +60,11 @@ MIDDLEWARE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'motivator',
-        'USER': 'motivator',
-        'HOST': os.environ.get('PGHOST', 'localhost'),
-        'PORT': 5432
+        'NAME': os.environ.get('POSTGRES_DB', 'motivator'),
+        'USER': os.environ.get('POSTGRES_USER', 'motivator'),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "motivator"),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432)
     }
 }
 
@@ -126,6 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 ACTIONS_START = 1
 ACTIONS_STOP = 2
@@ -135,8 +138,12 @@ ACTIONS_LONGTERM = 5
 ACTIONS_UNFINISHED = 6
 ACTIONS_UNFULLFILLED = 7
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://redis:6379/0')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
 
 CELERY_BEAT_SCHEDULE = {
     'start-actions': {
@@ -145,3 +152,8 @@ CELERY_BEAT_SCHEDULE = {
         'args': (ACTIONS_UNFINISHED,)
     }
 }
+
+SLACK_VERIFICATION_TOKEN = os.environ.get('SLACK_VERIFICATION_TOKEN')
+SLACK_BOT_USER_TOKEN = os.environ.get('SLACK_BOT_USER_TOKEN')
+TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
+TRELLO_KEY = os.environ.get('TRELLO_KEY')

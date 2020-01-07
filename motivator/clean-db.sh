@@ -6,9 +6,9 @@ export PGDATABASE="${PGDATABASE:-motivator}"
 
 env | grep '^PG'
 
-if [[ ! -z "$PGHOST" && "$PGHOST" != "localhost" &&  "$PGHOST" != "127.0.0.1" ]]; then
+if [[ ! -z "$POSTGRES_HOST" && "$POSTGRES_HOST" != "localhost" &&  "$POSTGRES_HOST" != "127.0.0.1" ]]; then
     echo
-    read -p "Going to DROP the database on $PGHOST. Continue? [y/N]: "
+    read -p "Going to DROP the database on $POSTGRES_HOST. Continue? [y/N]: "
 
     if [[ "$REPLY" != "y" ]]; then
         exit 1

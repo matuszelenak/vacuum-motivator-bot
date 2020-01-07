@@ -13,3 +13,9 @@ ADD . /motivator
 
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
+
+COPY ./deployment.sh /usr/local/bin/deployment.sh
+
+RUN chmod 777 /usr/local/bin/deployment.sh
+
+CMD /usr/local/bin/deployment.sh

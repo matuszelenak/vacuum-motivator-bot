@@ -2,20 +2,25 @@ version: '3'
 services:
   db:
     image: postgres:10-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=motivator
       - POSTGRES_DB=motivator
+      - POSTGRES_PASSWORD=motivator
     ports:
       - "5432:5432"
   web:
     build: .
     image: motivator
+    env_file:
+      - .envfile
     environment:
-      - PGHOST=db
+      - DJANGO_SETTINGS_MODULE=motivator.settings.development
     ports:
       - "8000:8000"
     volumes:
-      - .:/motivator
+    - .:/motivator
     depends_on:
       - db
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -25,8 +30,10 @@ services:
       - "6379:6379"
   celery:
     build: .
+    env_file:
+      - .envfile
     environment:
-      - PGHOST=db
+      - DJANGO_SETTINGS_MODULE=motivator.settings.development
     depends_on:
       - db
       - redis
@@ -35,8 +42,10 @@ services:
       - .:/motivator
   celery-beat:
     build: .
+    env_file:
+      - .envfile
     environment:
-      - PGHOST=db
+      - DJANGO_SETTINGS_MODULE=motivator.settings.development
     command: celery -A motivator beat -l info
     volumes:
       - .:/motivator
@@ -44,3 +53,6 @@ services:
       - celery
       - db
       - redis
+
+volumes:
+  postgres_data:
