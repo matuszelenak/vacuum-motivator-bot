@@ -124,19 +124,14 @@ USE_L10N = True
 USE_TZ = True
 
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-ACTIONS_START = 1
-ACTIONS_STOP = 2
-ACTIONS_CONTINUE = 3
-ACTIONS_DO = 4
-ACTIONS_LONGTERM = 5
-ACTIONS_UNFINISHED = 6
-ACTIONS_UNFULLFILLED = 7
 
 CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://redis:6379/0')
@@ -146,10 +141,9 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
 CELERY_BEAT_SCHEDULE = {
-    'start-actions': {
+    'remind': {
         'task': 'bot.tasks.ActionReminderDispatchTask',
         'schedule': crontab(minute='*/20'),
-        'args': (ACTIONS_UNFINISHED,)
     }
 }
 
@@ -157,3 +151,5 @@ SLACK_VERIFICATION_TOKEN = os.environ.get('SLACK_VERIFICATION_TOKEN')
 SLACK_BOT_USER_TOKEN = os.environ.get('SLACK_BOT_USER_TOKEN')
 TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
 TRELLO_KEY = os.environ.get('TRELLO_KEY')
+
+TRELLO_BOARD_ID = '5d0780ba5fc4773b7b64ea4c'

@@ -3,6 +3,7 @@ set -e
 
 export PGUSER="${PGUSER:-motivator}"
 export PGDATABASE="${PGDATABASE:-motivator}"
+export PGPASSWORD="${PGPASSWORD:-motivator}"
 
 env | grep '^PG'
 

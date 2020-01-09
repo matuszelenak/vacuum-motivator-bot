@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_list admin_urls %}
+{% load l10n %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.min.js" %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'bot/jPolygon.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            const canvas = document.getElementById('jPolygon');
+            const setup = new TextConfigurationSetup(canvas);
+            $(canvas).on('click', setup.canvasClick);
+            $(canvas).on('keypress', setup.canvasKey);
+            $(canvas).on('mousemove', setup.canvasMouseMove);
+            $('#complete').on('click', () => {
+                $('#{{ form.bound_box.id_for_label }}').val(JSON.stringify(setup.polygon));
+                $('#{{ form.angle.id_for_label }}').val(Math.round(setup.angle * 180 / Math.PI));
+                $('#{{ form.text.id_for_label }}').val(setup.text.join(''));
+                $('#{{ form.origin.id_for_label }}').val(JSON.stringify(setup.origin));
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <canvas tabindex="1" id="jPolygon" data-imgsrc="{{ image_path }}" oncontextmenu="return false;"></canvas>
+            <button class="btn btn-info" id="complete">Complete</button>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <ul>
+                    {% for action_type in template.action_types %}
+                        <li>{{ action_type }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <form action="" id="saveImage" method="POST" class="row">
+                {% csrf_token %}
+                <input hidden="hidden" type="text" id="coordinates">
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="submit-row">
+                    <input type="submit" type="button" id="btnSave" value="Uložit" class="actionOff ci"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
