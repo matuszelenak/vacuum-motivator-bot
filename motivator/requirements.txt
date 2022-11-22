@@ -8,4 +8,4 @@ celery==4.3.0
 slackclient==2.4.0
 slackeventsapi==2.1.0
 redis==3.3.11
-Pillow==7.0.0
+Pillow==9.3.0
